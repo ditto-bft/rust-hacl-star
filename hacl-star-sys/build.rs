@@ -1,9 +1,6 @@
-extern crate cc;
-#[cfg(feature = "bindgen")] extern crate bindgen;
-
 use std::env;
-#[cfg(feature = "bindgen")] use std::path::PathBuf;
-
+use std::path::PathBuf;
+use std::process::Command;
 
 fn main() {
     let mut cc = cc::Build::new();
