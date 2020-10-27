@@ -25,6 +25,7 @@ fn main() {
 
     // compile code...
     Command::new("./configure")
+        .arg("--disable-ocaml")
         .spawn()
         .map(|mut ch| ch.wait().unwrap())
         .unwrap();
