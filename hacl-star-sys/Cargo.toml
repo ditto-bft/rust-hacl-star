@@ -11,10 +11,6 @@ license = "MIT"
 edition = "2018"
 
 [features]
-use_std = [ "libc/use_std" ]
+use_std = [ ]
 
 [dependencies]
-libc = { version = "0.2", default-features = false }
-
-[build-dependencies]
-bindgen = "0.55.1"
