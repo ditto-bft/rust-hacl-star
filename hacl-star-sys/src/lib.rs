@@ -15,5 +15,4 @@ mod libc {
     pub type c_uchar = u8;
 }
 
-mod imp;
-pub use imp::*;
+pub mod ffi;
