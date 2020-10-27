@@ -10,10 +10,5 @@ documentation = "https://docs.rs/hacl-star/"
 license = "MIT"
 edition = "2018"
 
-[workspace]
-exclude = ["examples/hacl-box-wasm"]
-
 [dependencies]
 hacl-star-sys = { version = "0.1", path = "hacl-star-sys" }
-
-[dev-dependencies]

@@ -1,5 +1,3 @@
-#![no_std]
-
 //pub mod sha2;
 //pub mod hmac;
 //pub mod poly1305;
