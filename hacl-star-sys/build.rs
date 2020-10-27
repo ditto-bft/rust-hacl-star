@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use std::process::Command;
 use std::default::Default;
 
-const LIB: &str = "libevercrypt.a";
+const LIB: &str = "evercrypt";
 
 fn main() {
     // create the destiny folder for the resulting bindings
@@ -38,9 +38,18 @@ fn main() {
     println!("cargo:rustc-link-lib=static={}", LIB);
     println!("cargo:rustc-link-search=native={}", hacl_dir.to_str().unwrap());
 
+    // add kremlin to include path
+    env::set_var(
+        "C_INCLUDE_PATH",
+        env::join_paths(&[
+            hacl_dir.join("kremlin").join("include"),
+            hacl_dir.join("kremlin").join("kremlib").join("dist").join("minimal"),
+        ]).unwrap()
+    );
+
     // generate binds
     bindgen::Builder::default()
-        .header(mod_dir.to_str().unwrap())
+        .header(hacl_dir.join("wrapper.h").to_str().unwrap())
         .ctypes_prefix("crate::libc")
         .use_core()
         //.whitelist_type($white)
