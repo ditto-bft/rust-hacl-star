@@ -4,13 +4,10 @@ version = "0.1.0"
 authors = ["quininer <quininer@live.com>", "Tiago Carvalho <up201605259@fc.up.pt>"]
 description = "HACL* FFI"
 keywords = [ "hacl-star", "cryptographic" ]
-categories = [ "no-std", "cryptography", "api-bindings" ]
+categories = [ "cryptography", "api-bindings" ]
 repository = "https://github.com/quininer/rust-hacl-star"
 documentation = "https://docs.rs/hacl-star-sys/"
 license = "MIT"
 edition = "2018"
-
-[features]
-use_std = [ ]
 
 [dependencies]
