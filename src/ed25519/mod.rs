@@ -5,15 +5,12 @@ pub const PUBLIC_LENGTH: usize = 32;
 pub const SIG_LENGTH: usize = 64;
 
 #[derive(Clone)]
-#[repr(C)]
 pub struct SecretKey(pub [u8; SECRET_LENGTH]);
 
 #[derive(Clone)]
-#[repr(C)]
 pub struct PublicKey(pub [u8; PUBLIC_LENGTH]);
 
 #[derive(Clone)]
-#[repr(C)]
 pub struct Signature(pub [u8; SIG_LENGTH]);
 
 impl SecretKey {
@@ -38,7 +35,7 @@ impl SecretKey {
             ffi::Hacl_Ed25519_sign(
                 sig.as_mut_ptr(),
                 sk.as_ptr(),
-                msg.len() as _,
+                msg.len() as u32,
                 msg.as_ptr()
             );
         }
@@ -48,14 +45,15 @@ impl SecretKey {
 }
 
 impl PublicKey {
-    pub fn verify(&self, msg: &[u8], &Signature(ref sig): &Signature) -> bool {
+    pub fn verify(&self, msg: &[u8], sig: &Signature) -> bool {
         let PublicKey(ref pk) = self;
+        let Signature(ref sig_ref) = sig;
         unsafe {
             ffi::Hacl_Ed25519_verify(
-                pk.as_ptr() as _,
-                msg.len() as _,
+                pk.as_ptr(),
+                msg.len() as u32,
                 msg.as_ptr(),
-                sig.as_ptr()
+                sig_ref.as_ptr()
             )
         }
     }
