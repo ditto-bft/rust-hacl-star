@@ -1,7 +1,7 @@
 use hacl_star_sys::ffi;
 
 pub const SECRET_LENGTH: usize = 32;
-pub const PUBLIC_LENGTH: usize = 32;
+pub const PUBLIC_LENGTH: usize = 64;
 pub const SIG_LENGTH: usize = 64;
 
 #[derive(Clone)]
