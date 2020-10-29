@@ -14,7 +14,8 @@ pub struct PublicKey(pub [u8; PUBLIC_LENGTH]);
 pub struct Signature(pub [u8; SIG_LENGTH]);
 
 impl SecretKey {
-    pub fn get_public(&self) -> PublicKey { let SecretKey(sk) = self;
+    pub fn get_public(&self) -> PublicKey {
+        let SecretKey(sk) = self;
         let mut pk = [0; PUBLIC_LENGTH];
 
         unsafe {
