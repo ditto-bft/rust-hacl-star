@@ -1,8 +1,12 @@
 use hacl_star_sys::ffi;
 
+pub const EXPANDED_SECRET_LENGTH: usize = 64;
 pub const SECRET_LENGTH: usize = 32;
 pub const PUBLIC_LENGTH: usize = 64;
 pub const SIG_LENGTH: usize = 64;
+
+#[derive(Clone)]
+pub struct ExpandedSecretKey(pub [u8; EXPANDED_SECRET_LENGTH]);
 
 #[derive(Clone)]
 pub struct SecretKey(pub [u8; SECRET_LENGTH]);
@@ -12,6 +16,24 @@ pub struct PublicKey(pub [u8; PUBLIC_LENGTH]);
 
 #[derive(Clone)]
 pub struct Signature(pub [u8; SIG_LENGTH]);
+
+impl ExpandedSecretKey {
+    pub fn signature(&self, msg: &[u8]) -> Signature {
+        let ExpandedSecretKey(ref sk) = self;
+        let mut sig = [0; SIG_LENGTH];
+
+        unsafe {
+            ffi::Hacl_Ed25519_sign_expanded(
+                sig.as_mut_ptr(),
+                sk.as_ptr(),
+                msg.len() as u32,
+                msg.as_ptr()
+            );
+        }
+
+        Signature(sig)
+    }
+}
 
 impl SecretKey {
     pub fn get_public(&self) -> PublicKey {
@@ -29,7 +51,7 @@ impl SecretKey {
     }
 
     pub fn signature(&self, msg: &[u8]) -> Signature {
-        let SecretKey(sk) = self;
+        let SecretKey(ref sk) = self;
         let mut sig = [0; SIG_LENGTH];
 
         unsafe {
@@ -42,6 +64,20 @@ impl SecretKey {
         }
 
         Signature(sig)
+    }
+
+    pub fn expand(&self) -> ExpandedSecretKey {
+        let SecretKey(ref sk) = self;
+        let mut ks = [0; EXPANDED_SECRET_LENGTH];
+
+        unsafe {
+            ffi::Hacl_Ed25519_expand_keys(
+                ks.as_mut_ptr(),
+                sk.as_ptr()
+            );
+        }
+
+        ExpandedSecretKey(ks)
     }
 }
 
